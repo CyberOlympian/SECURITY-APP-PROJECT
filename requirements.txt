@@ -1,7 +1,7 @@
 SECURITY_APP_PROJECT
-├── .github/
-├── app/
-├── tests/
-├── requirements.txt
-├── Dockerfile
-└── README.md
+.github/
+app/
+tests/
+requirements.txt
+Dockerfile
+README.md
