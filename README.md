@@ -31,14 +31,6 @@ security-app/
 └── DEVSECOPS_GUIDE.md            ← Complete documentation with logs
 ```
 
-## 🎯 Quick Start
-
-### Clone Repository
-```bash
-git clone https://github.com/leepascua/security-app.git
-cd security-app
-```
-
 ### Good Example - Secure Application
 
 ```bash
@@ -62,35 +54,6 @@ docker build -t secure-app-good:latest .
 docker run -p 5000:5000 secure-app-good:latest
 ```
 
-### Bad Example - Vulnerable Application (For Training Only)
-
-```bash
-cd secure-app-bad
-
-# This demonstrates intentional vulnerabilities
-# DO NOT USE IN PRODUCTION
-
-# View the vulnerabilities
-cat app/main.py
-cat requirements.txt
-cat Dockerfile
-```
-
-## 🔒 Security Features Compared
-
-| Feature | Good ✓ | Bad ✗ |
-|---------|--------|-------|
-| **Dependencies** | Latest versions (3.0.0) | Outdated (2.0.1) |
-| **Dependency CVEs** | 0 known CVEs | 8+ CVEs in packages |
-| **Input Validation** | Comprehensive | None |
-| **Error Handling** | Safe, no details leaked | Exposes tracebacks |
-| **Secrets** | None hardcoded | Hardcoded credentials |
-| **Base Image** | Python 3.12-Alpine | Python 3.8-slim (EOL) |
-| **Container User** | Non-root (appuser) | Running as root |
-| **Container CVEs** | 0 critical | 12+ CRITICAL |
-| **Test Coverage** | 94% | 62% |
-| **Tests Passing** | 21/21 (100%) | 5/11 (45%) |
-| **Production Ready** | YES | NO |
 
 ## 🚀 GitHub Actions Pipeline
 
@@ -120,7 +83,7 @@ Both repositories include identical CI/CD pipelines that demonstrate:
    - Good: ✓ Deploys to production
    - Bad: ✗ Deployment blocked
 
-## 📊 Example Pipeline Logs
+## Example Pipeline Logs
 
 See [DEVSECOPS_GUIDE.md](DEVSECOPS_GUIDE.md) for:
 - Complete file contents
@@ -128,7 +91,6 @@ See [DEVSECOPS_GUIDE.md](DEVSECOPS_GUIDE.md) for:
 - Realistic failed pipeline execution logs
 - Detailed vulnerability reports
 
-## 🔍 What to Look For
 
 ### In Good Example:
 - Input validation and sanitization
@@ -141,34 +103,8 @@ See [DEVSECOPS_GUIDE.md](DEVSECOPS_GUIDE.md) for:
 - Production-grade WSGI server (gunicorn)
 - Comprehensive test coverage
 
-### In Bad Example:
-- Hardcoded credentials (API keys, passwords)
-- No input validation
-- Unsafe use of `eval()`
-- Unsafe use of `os.system()`
-- Unsafe pickle deserialization
-- Debug mode enabled in production
-- Outdated vulnerable dependencies
-- Running container as root
-- Error messages exposing internal details
-- Intentional test failures
 
-## 📚 Learning Outcomes
-
-After studying this repository, you will understand:
-
-1. ✓ How to write secure Flask microservices
-2. ✓ Common injection vulnerabilities and prevention
-3. ✓ Proper container security practices
-4. ✓ DevSecOps CI/CD pipeline structure
-5. ✓ Dependency vulnerability scanning
-6. ✓ SAST tools and their output
-7. ✓ Container image security scanning
-8. ✓ Pipeline failure modes and causes
-9. ✓ Security best practices
-10. ✓ Common anti-patterns and mistakes
-
-## 🛠️ Tools Used
+## Tools Used
 
 - **Flask** - Web framework
 - **pytest** - Unit testing
@@ -178,7 +114,7 @@ After studying this repository, you will understand:
 - **Docker** - Containerization
 - **GitHub Actions** - CI/CD pipeline
 
-## 📋 Pipeline Stages
+## Pipeline Stages
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -201,56 +137,12 @@ After studying this repository, you will understand:
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## 🔐 Collaborators
-
-To add collaborators:
-1. Go to Settings → Collaborators
-2. Add email or GitHub username
-3. Select permission level
-4. Send invitation
-
-Suggested: r@iclassed.com for security team review
-
 ## 📖 Documentation
 
 - `DEVSECOPS_GUIDE.md` - Complete file contents and pipeline logs
 - `secure-app-good/README.md` - Good example details
-- `secure-app-bad/README.md` - Bad example training guide
 
-## 🎓 Usage Scenarios
 
-### Security Training
-Use the Bad example to teach common vulnerabilities
-
-### CI/CD Learning
-Study both pipelines to learn DevSecOps practices
-
-### Code Review
-Use Bad example in code review training
-
-### Compliance
-Demonstrate security scanning compliance
-
-### Interview Preparation
-Reference for security-focused engineering interviews
-
-## ⚠️ Disclaimer
-
-The **Bad example** is intentionally insecure for educational purposes.
-**DO NOT DEPLOY OR USE IN PRODUCTION.**
-
-The **Good example** represents production-ready patterns.
-
-## 📞 Support
-
-For questions or improvements:
-- Review the code comments
-- Check DEVSECOPS_GUIDE.md for detailed explanations
-- Consult security best practices documentation
-
-## 📄 License
-
-This training repository is provided as-is for educational purposes.
 
 ---
 
