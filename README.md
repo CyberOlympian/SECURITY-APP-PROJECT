@@ -2,7 +2,7 @@
 
 Complete practical DevSecOps demonstration repositories showcasing security best practices and common vulnerabilities.
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 security-app/
@@ -53,35 +53,6 @@ docker build -t secure-app-good:latest .
 # Run container
 docker run -p 5000:5000 secure-app-good:latest
 ```
-
-
-## 🚀 GitHub Actions Pipeline
-
-Both repositories include identical CI/CD pipelines that demonstrate:
-
-1. **Dependency Scanning** (Safety)
-   - Good: ✓ 0 vulnerabilities
-   - Bad: ✗ 8 CVEs detected
-
-2. **SAST Analysis** (Bandit)
-   - Good: ✓ No issues
-   - Bad: ✗ Multiple injection vulnerabilities
-
-3. **Unit Tests** (pytest)
-   - Good: ✓ 21/21 passing (94% coverage)
-   - Bad: ✗ 6/11 failing
-
-4. **Container Build** (Docker)
-   - Good: ✓ Minimal Alpine image (128MB)
-   - Bad: ✗ Large outdated image (512MB)
-
-5. **Container Scanning** (Trivy)
-   - Good: ✓ 0 vulnerabilities
-   - Bad: ✗ 492 vulnerabilities (12 CRITICAL)
-
-6. **Deployment**
-   - Good: ✓ Deploys to production
-   - Bad: ✗ Deployment blocked
 
 ## Example Pipeline Logs
 
