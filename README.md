@@ -83,7 +83,6 @@ See [DEVSECOPS_GUIDE.md](DEVSECOPS_GUIDE.md) for:
 - **Safety** - Dependency scanning
 - **Trivy** - Container scanning
 - **Docker** - Containerization
-- **GitHub Actions** - CI/CD pipeline
 
 ## Pipeline Stages
 
