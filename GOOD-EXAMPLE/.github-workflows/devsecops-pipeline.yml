@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ main ]  
 
 jobs:
   dependency-scan:
@@ -52,9 +52,12 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-cov
 
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=." >> $GITHUB_ENV
+
       - name: Run unit tests with coverage
         run: |
-          pytest -v --cov=. --cov-report=term-missing --cov-report=html --tb=short
+          pytest Tests -v --cov=App --cov-report=term-missing --cov-report=html --tb=short
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
