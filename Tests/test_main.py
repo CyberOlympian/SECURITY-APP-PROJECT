@@ -1,5 +1,9 @@
 from App.main import app
 
-- name: Run unit tests with coverage
+- name: Install app dependencies
   run: |
-    pytest -v --cov=App --cov-report=term-missing --cov-report=html --tb=short
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+
+- name: Set PYTHONPATH
+  run: echo "PYTHONPATH=." >> $GITHUB_ENV
