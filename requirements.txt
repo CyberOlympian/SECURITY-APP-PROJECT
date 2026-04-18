@@ -1,5 +1,4 @@
 SECURITY_APP_PROJECT
-.github/
 app/
 tests/
 requirements.txt
