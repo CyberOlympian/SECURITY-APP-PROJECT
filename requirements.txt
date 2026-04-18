@@ -1,6 +1,4 @@
 SECURITY_APP_PROJECT
-app/
-tests/
 requirements.txt
 Dockerfile
 README.md
