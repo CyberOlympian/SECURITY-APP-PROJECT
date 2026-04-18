@@ -1,4 +1,4 @@
-SECURITY_APP_PROJECT/
+SECURITY_APP_PROJECT
 ├── .github/
 ├── app/
 ├── tests/
