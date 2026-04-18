@@ -1,179 +1,29 @@
-"""
-Secure Flask API microservice
-Demonstrates secure coding practices with:
-- security headers
-- strict JSON validation
-- safe error handling
-- bounded input checks
-- consistent API responses
-"""
+name: Flask CI Pipeline
 
-from flask import Flask, request, jsonify
-import logging
-import os
-from functools import wraps
-from typing import Any, Dict, Tuple
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-app = Flask(__name__)
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-# Secure logging configuration
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(name)s: %(message)s"
-)
-logger = logging.getLogger(__name__)
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-# Constants
-MAX_USER_ID = 1_000_000
-MAX_EMAIL_LENGTH = 254
-MAX_INPUT_LENGTH = 1000
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
 
-def json_response(payload: Dict[str, Any], status_code: int) -> Tuple[Any, int]:
-    """Return a consistent JSON response."""
-    return jsonify(payload), status_code
-
-
-@app.after_request
-def set_security_headers(response):
-    """Set common security headers."""
-    response.headers["X-Content-Type-Options"] = "nosniff"
-    response.headers["X-Frame-Options"] = "DENY"
-    response.headers["X-XSS-Protection"] = "1; mode=block"
-    response.headers["Referrer-Policy"] = "no-referrer"
-    response.headers["Content-Security-Policy"] = "default-src 'self'"
-    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
-    return response
-
-
-def validate_json_request(f):
-    """Decorator to validate JSON POST requests."""
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if request.method == "POST":
-            if not request.is_json:
-                return json_response(
-                    {"error": "Content-Type must be application/json"},
-                    400
-                )
-
-            data = request.get_json(silent=True)
-            if data is None:
-                return json_response(
-                    {"error": "Invalid JSON body"},
-                    400
-                )
-
-            if not isinstance(data, dict):
-                return json_response(
-                    {"error": "JSON body must be an object"},
-                    400
-                )
-
-        return f(*args, **kwargs)
-    return decorated_function
-
-
-@app.route("/health", methods=["GET"])
-def health():
-    """Health check endpoint."""
-    return json_response(
-        {"status": "healthy", "version": "1.0.0"},
-        200
-    )
-
-
-@app.route("/api/users/<int:user_id>", methods=["GET"])
-def get_user(user_id: int):
-    """Get user by ID with bounded validation."""
-    if user_id < 0 or user_id > MAX_USER_ID:
-        logger.warning("Invalid user_id requested: %s", user_id)
-        return json_response({"error": "Invalid user ID"}, 400)
-
-    user = {
-        "id": user_id,
-        "name": f"User {user_id}",
-        "email": f"user{user_id}@example.com"
-    }
-    return json_response(user, 200)
-
-
-@app.route("/api/validate", methods=["POST"])
-@validate_json_request
-def validate_email():
-    """Validate email address with safe input handling."""
-    try:
-        data = request.get_json()
-        email = data.get("email", "")
-
-        if not isinstance(email, str):
-            return json_response({"error": "Email must be a string"}, 400)
-
-        email = email.strip()
-
-        if not email or len(email) > MAX_EMAIL_LENGTH:
-            return json_response({"error": "Invalid email length"}, 400)
-
-        # Basic validation only
-        if "@" not in email:
-            return json_response({"valid": False}, 200)
-
-        local_part, _, domain = email.partition("@")
-        if not local_part or "." not in domain:
-            return json_response({"valid": False}, 200)
-
-        return json_response({"valid": True}, 200)
-
-    except Exception:
-        logger.exception("Error validating email")
-        return json_response({"error": "Invalid request format"}, 400)
-
-
-@app.route("/api/process", methods=["POST"])
-@validate_json_request
-def process_data():
-    """Process input with strict validation."""
-    try:
-        data = request.get_json()
-        value = data.get("value")
-
-        if not isinstance(value, (int, str)):
-            return json_response({"error": "Invalid input type"}, 400)
-
-        if isinstance(value, str):
-            value = value.strip()
-            if len(value) > MAX_INPUT_LENGTH:
-                return json_response({"error": "Input too long"}, 400)
-
-        result = f"Processed: {str(value)[:100]}"
-        return json_response({"result": result}, 200)
-
-    except Exception:
-        logger.exception("Unexpected error while processing data")
-        return json_response({"error": "Internal server error"}, 500)
-
-
-@app.errorhandler(400)
-def bad_request(error):
-    return json_response({"error": "Bad request"}, 400)
-
-
-@app.errorhandler(404)
-def not_found(error):
-    return json_response({"error": "Not found"}, 404)
-
-
-@app.errorhandler(405)
-def method_not_allowed(error):
-    return json_response({"error": "Method not allowed"}, 405)
-
-
-@app.errorhandler(500)
-def internal_error(error):
-    logger.exception("Internal server error")
-    return json_response({"error": "Internal server error"}, 500)
-
-
-if __name__ == "__main__":
-    debug_mode = os.getenv("FLASK_DEBUG", "False").lower() == "true"
-    app.run(host="0.0.0.0", port=5000, debug=debug_mode)
+      - name: Run tests
+        run: pytest
