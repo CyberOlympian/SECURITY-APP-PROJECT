@@ -1,4 +1,3 @@
-"""
 Secure Flask API microservice
 Demonstrates secure coding practices
 """
