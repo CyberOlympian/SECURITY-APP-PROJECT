@@ -6,30 +6,34 @@ on:
   pull_request:
     branches: [ main ]
 
-jobs:
-  dependency-scan:
-    name: Dependency Vulnerability Scan
-    runs-on: ubuntu-latest
+jobs: dependency-scan:
+  name: Dependency and Code Security Scan
+  runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          cache: "pip"
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+        cache: "pip"
 
-      - name: Install scan tools
-        run: |
-          python -m pip install --upgrade pip
-          pip install safety
+    - name: Install scanning tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install safety semgrep
 
-      - name: Run dependency scan
-        run: |
-          echo "Scanning Python dependencies..."
-          safety check --full-report || true
+    - name: Run dependency scan
+      run: |
+        echo "Scanning dependencies..."
+        safety check --full-report || true
+
+    - name: Run Semgrep (static code analysis)
+      run: |
+        echo "Running custom security rules..."
+        semgrep --config semgrep-rules.yml App/ || true
 
   unit-tests:
     name: Unit Tests
