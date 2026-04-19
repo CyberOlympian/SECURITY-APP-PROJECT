@@ -12,9 +12,10 @@ security-app/
 │   ├── tests/
 │   │   └── test_main.py         (28 comprehensive tests, 94% coverage)
 │   ├── .github/workflows/
-│   │   └── devsecops-pipeline.yml (Full DevSecOps CI/CD pipeline)
+│   │   └── devsecops-pipeline.yml (Full DevSecOps CI/CD pipeline with Semgrep)
 │   ├── Dockerfile               (Alpine Linux, non-root user)
 │   ├── requirements.txt          (Latest secure versions)
+│   ├── semgrep-rules.yml         ← Custom security rules ✓
 │   └── README.md
 │
 ├── secure-app-bad/               ← Intentional vulnerabilities ✗
@@ -26,6 +27,7 @@ security-app/
 │   │   └── devsecops-pipeline.yml (Same pipeline, fails on issues)
 │   ├── Dockerfile               (Outdated base image, runs as root)
 │   ├── requirements.txt          (Old vulnerable packages)
+│   ├── semgrep-rules.yml         ← Same rules applied (will trigger findings)
 │   └── README.md
 │
 └── DEVSECOPS_GUIDE.md            ← Complete documentation with logs
