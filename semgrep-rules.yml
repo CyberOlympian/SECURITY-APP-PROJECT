@@ -1,0 +1,29 @@
+rules:
+  - id: no-hardcoded-secrets
+    patterns:
+      - pattern: $VAR = "..."
+    message: "Possible hardcoded secret in variable '$VAR'. Use environment variables instead."
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      confidence: LOW
+
+  - id: no-debug-mode
+    pattern: app.run(..., debug=True, ...)
+    message: "Flask debug mode must never be enabled in production code."
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      confidence: HIGH
+
+  - id: no-sql-string-concat
+    pattern: |
+      $QUERY = "..." + $VAR
+    message: "Possible SQL injection via string concatenation. Use parameterized queries."
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      confidence: MEDIUM
