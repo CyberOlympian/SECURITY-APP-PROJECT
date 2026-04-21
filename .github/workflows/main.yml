@@ -62,7 +62,7 @@ jobs:
 
       - name: Run unit tests with coverage
         run: |
-          pytest Tests -v --cov=App --cov-report=term-missing --cov-report=html --tb=short
+          pytest Test -v --cov=App --cov-report=term-missing --cov-report=html --tb=short
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
